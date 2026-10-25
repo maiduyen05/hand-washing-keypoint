@@ -9,7 +9,7 @@ source:
 paths:
   train_csv: "data/train_hand_keypoints.csv"
   test_csv: "data/test_hand_keypoints.csv"
-  output_dir: "artifacts/preprocessing"
+  output_dir: "artifacts/preprocessing_16"
 
 split:
   seed: 42
@@ -30,7 +30,7 @@ features:
   motion: true
 
 sequence:
-  window_size: 48
+  window_size: 16
   stride: 2
 
 processing:

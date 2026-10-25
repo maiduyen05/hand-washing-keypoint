@@ -121,6 +121,16 @@ def prepare(config: dict[str, Any]) -> dict[str, Any]:
             window_writer.close()
     if window_writer is None:
         pd.DataFrame(columns=WINDOW_COLUMNS).to_parquet(window_path, index=False)
+        
+    # Đảm bảo đã xử lý đủ số video có trong split manifest
+    expected_videos = len(metadata)
+
+    if video_count != expected_videos:
+        raise RuntimeError(
+            f"Preprocessing chưa hoàn chỉnh: "
+            f"đã xử lý {video_count}/{expected_videos} video"
+        )
+        
     return {
         "videos": video_count,
         "rows": row_offset,

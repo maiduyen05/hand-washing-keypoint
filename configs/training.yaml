@@ -6,7 +6,7 @@ data:
   groups: ["shape", "relation", "motion"]
   nominal_fps: 16.0
   reaction_margin_seconds: 0.5
-  expected_window_size: 48
+  expected_window_size: 16
   allowed_labels: [0, 1, 2, 3, 4, 5, 6]
 
 model:
