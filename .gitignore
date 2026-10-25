@@ -1,0 +1,38 @@
+# Dữ liệu lớn và artifacts tái tạo được
+train_hand_keypoints.csv
+test_hand_keypoints.csv
+artifacts/
+data/
+*.parquet
+
+# Model và kết quả training
+outputs/
+checkpoints/
+*.pt
+*.pth
+*.ckpt
+*.npz
+
+# Secrets
+.env
+.env.*
+kaggle.json
+.kaggle/
+
+# Python / notebook caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ipynb_checkpoints/
+.venv/
+venv/
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Tài liệu chỉ giữ trên máy local
+THAY_DOI_VA_CAI_TIEN.md
+KAGGLE_TRAINING.md

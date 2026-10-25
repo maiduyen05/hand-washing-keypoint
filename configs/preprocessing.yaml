@@ -1,0 +1,43 @@
+source:
+  record_url: "https://zenodo.org/records/5808789"
+  doi: "10.5281/zenodo.5808789"
+  statistics_url: "https://zenodo.org/api/records/5808789/files/statistics.csv/content"
+  statistics_md5: "e5c66f07be277a5a79bbf11933470968"
+  expected_videos: 212
+  expected_participants: 72
+
+paths:
+  train_csv: "data/train_hand_keypoints.csv"
+  test_csv: "data/test_hand_keypoints.csv"
+  output_dir: "artifacts/preprocessing"
+
+split:
+  seed: 42
+  train_participants: 50
+  validation_participants: 11
+  test_participants: 11
+  folds: 5
+  search_iterations: 5000
+
+temporal:
+  nominal_fps: 16.0
+  reaction_margin_seconds: 0.5
+  interpolation_max_seconds: 0.25
+
+features:
+  shape: true
+  relation: true
+  motion: true
+
+sequence:
+  window_size: 48
+  stride: 2
+
+processing:
+  csv_chunk_size: 5000
+  parquet_compression: "zstd"
+
+validation:
+  allowed_labels: [0, 1, 2, 3, 4, 5, 6]
+  require_unique_feature_names: true
+  require_participant_disjoint: true
