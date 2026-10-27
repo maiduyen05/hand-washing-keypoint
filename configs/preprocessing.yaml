@@ -2,8 +2,14 @@ source:
   record_url: "https://zenodo.org/records/5808789"
   doi: "10.5281/zenodo.5808789"
   statistics_url: "https://zenodo.org/api/records/5808789/files/statistics.csv/content"
-  statistics_md5: "e5c66f07be277a5a79bbf11933470968"
-  expected_videos: 212
+  # statistics_md5: "e5c66f07be277a5a79bbf11933470968"
+  statistics_md5: "c6072004ac085e49083404651210a7a0"
+  # cái trên là của down trên web về, cái dưới là của local :))
+  # MD5 (Message Digest Algorithm 5) là một thuật toán tạo ra một chuỗi ký tự dài 32 ký tự hexadecimal, 
+  # giống như dấu vân tay của file.
+  # MD5 giúp kiểm tra tính nhất quán của file, chứ không đánh giá dữ liệu bên trong có chính xác hay không. 
+  # MD5 cũng không còn phù hợp để kiểm chứng bảo mật vì có thể xảy ra va chạm mã băm.
+  expected_videos: 211
   expected_participants: 72
 
 paths:
@@ -31,7 +37,7 @@ features:
 
 sequence:
   window_size: 16
-  stride: 2
+  stride: 8
 
 processing:
   csv_chunk_size: 5000

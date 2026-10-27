@@ -40,21 +40,61 @@ def participant_id_from_filename(filename: str, interface_id: int) -> int:
         raise ValueError(f"Invalid participant id {participant} in {filename}")
     return participant
 
+## Hàm cũ này sẽ down file statistics từ Zenodo, 
+# nhưng hiện tại chúng ta đã có file statistics trên local, nên không cần download nữa.
+# def download_statistics(config: dict[str, Any]) -> pd.DataFrame:
+#     url = config["source"]["statistics_url"]
+#     with urllib.request.urlopen(url, timeout=60) as response:
+#         payload = response.read()
+#     digest = hashlib.md5(payload).hexdigest()  # nosec: checksum supplied by Zenodo
+#     expected = str(config["source"]["statistics_md5"]).lower()
+#     if digest != expected:
+#         raise ValueError(f"statistics.csv checksum mismatch: {digest} != {expected}")
+#     destination = output_path(config, "zenodo_statistics.csv")
+#     destination.write_bytes(payload)
+#     frame = pd.read_csv(io.BytesIO(payload))
+#     expected_rows = int(config["source"]["expected_videos"])
+#     if len(frame) != expected_rows:
+#         raise ValueError(f"Expected {expected_rows} Zenodo rows, found {len(frame)}")
+#     return frame
+
 
 def download_statistics(config: dict[str, Any]) -> pd.DataFrame:
-    url = config["source"]["statistics_url"]
-    with urllib.request.urlopen(url, timeout=60) as response:
-        payload = response.read()
-    digest = hashlib.md5(payload).hexdigest()  # nosec: checksum supplied by Zenodo
+    # 1. Đường dẫn file CSV đã có sẵn trên local
+    file_path = Path(config["paths"]["output_dir"]) / "zenodo_statistics.csv"
+
+    # 2. Kiểm tra file có tồn tại không
+    if not file_path.is_file():
+        raise FileNotFoundError(
+            f"Không tìm thấy file statistics: {file_path}"
+        )
+
+    # 3. Đọc dữ liệu từ file local
+    payload = file_path.read_bytes()
+
+    # 4. Kiểm tra MD5 để đảm bảo nội dung file không bị thay đổi
+    digest = hashlib.md5(payload).hexdigest()
     expected = str(config["source"]["statistics_md5"]).lower()
+
     if digest != expected:
-        raise ValueError(f"statistics.csv checksum mismatch: {digest} != {expected}")
-    destination = output_path(config, "zenodo_statistics.csv")
-    destination.write_bytes(payload)
+        raise ValueError(
+            f"MD5 không khớp: {digest} != {expected}"
+        )
+
+    # 5. Chuyển dữ liệu CSV thành DataFrame
     frame = pd.read_csv(io.BytesIO(payload))
+
+    # 6. Kiểm tra số lượng video trong file
     expected_rows = int(config["source"]["expected_videos"])
+
     if len(frame) != expected_rows:
-        raise ValueError(f"Expected {expected_rows} Zenodo rows, found {len(frame)}")
+        raise ValueError(
+            f"Số video không đúng: {len(frame)} != {expected_rows}"
+        )
+
+    print(f"Đã đọc statistics từ local: {file_path}")
+    print(f"Số video trong statistics: {len(frame)}")
+
     return frame
 
 
